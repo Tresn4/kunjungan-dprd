@@ -1,0 +1,283 @@
+/* Styling khusus untuk halaman dashboard admin */
+
+.min-h-screen {
+  background: #f8fafc !important;
+}
+
+.admin-header {
+  background: linear-gradient(to right, #003875 0%, #00223d 100%);
+  box-shadow: 0 4px 15px -3px rgba(0, 0, 0, 0.2);
+  padding: 1.5rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.admin-header .container {
+  max-width: 1400px !important;
+  padding: 0 1.5rem;
+}
+
+.admin-header h1 {
+  color: #ffffff !important;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 0.25rem;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.admin-header p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.875rem;
+}
+
+/* Logout button styling */
+.admin-header button {
+  background: linear-gradient(to right, #dc2626 0%, #b91c1c 100%) !important;
+  border: none;
+  color: white;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3);
+}
+
+.admin-header button:hover {
+  background: linear-gradient(to right, #b91c1c 0%, #991b1b 100%) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+}
+
+.admin-header button svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* Card styling */
+.bg-white {
+  background: white !important;
+  border-radius: 1rem !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border: 1px solid rgba(0, 56, 117, 0.1);
+  transition: all 0.3s ease;
+}
+
+.bg-white:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  transform: translateY(-2px);
+}
+
+/* Header section styling */
+.bg-blue-600 {
+  background: linear-gradient(to right, #003875 0%, #00223d 100%) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 1.5rem !important;
+  border-radius: 1rem 1rem 0 0 !important;
+}
+
+/* Table styling */
+.overflow-x-auto {
+  border-radius: 0 0 1rem 1rem;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+
+thead {
+  background: #f8fafc !important;
+}
+
+th {
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #003875 !important;
+  padding: 1rem 1.5rem !important;
+  font-size: 0.75rem !important;
+  border-bottom: 2px solid rgba(0, 56, 117, 0.1);
+}
+
+td {
+  padding: 1rem 1.5rem !important;
+  font-size: 0.875rem !important;
+  color: #1f2937 !important;
+  border-bottom: 1px solid rgba(0, 56, 117, 0.05);
+}
+
+tbody tr {
+  transition: all 0.2s ease-in-out;
+}
+
+tbody tr:hover {
+  background: #f8fafc !important;
+}
+
+/* Button styling */
+button {
+  padding: 0.5rem 1rem !important;
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease-in-out !important;
+  border-radius: 0.5rem !important;
+}
+
+button:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+}
+
+.bg-blue-500 {
+  background: linear-gradient(to right, #003875 0%, #00223d 100%) !important;
+  border: none !important;
+  color: white !important;
+}
+
+.bg-green-500 {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+  border: none !important;
+  color: white !important;
+}
+
+/* Empty state styling */
+.text-center.text-gray-500 {
+  padding: 3rem !important;
+  color: #6b7280 !important;
+}
+
+.text-center.text-gray-500 svg {
+  width: 4rem !important;
+  height: 4rem !important;
+  margin-bottom: 1.5rem !important;
+  color: #9ca3af !important;
+}
+
+/* Loading spinner */
+.animate-spin {
+  border-width: 3px !important;
+  border-color: #e5e7eb !important;
+  border-top-color: #003875 !important;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.status-pending {
+  background: rgba(251, 191, 36, 0.1);
+  color: #d97706;
+}
+
+.status-approved {
+  background: rgba(16, 185, 129, 0.1);
+  color: #059669;
+}
+
+.status-rejected {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+/* Search and filter section */
+.search-filter-section {
+  background: white;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(0, 56, 117, 0.1);
+}
+
+.search-input {
+  border: 1px solid rgba(0, 56, 117, 0.2);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #003875;
+  box-shadow: 0 0 0 3px rgba(0, 56, 117, 0.1);
+}
+
+/* Pagination styling */
+.pagination-section {
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(0, 56, 117, 0.1);
+}
+
+.page-button {
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  background: white;
+  border: 1px solid rgba(0, 56, 117, 0.2);
+  color: #003875;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.page-button:hover:not(:disabled) {
+  background: #f8fafc;
+  border-color: #003875;
+}
+
+.page-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem !important;
+  }
+  
+  th, td {
+    padding: 0.75rem 1rem !important;
+  }
+  
+  button {
+    padding: 0.375rem 0.75rem !important;
+  }
+
+  .search-filter-section {
+    padding: 1rem;
+  }
+}
+
+/* Custom scrollbar */
+.overflow-x-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: #f8fafc;
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(0, 56, 117, 0.2);
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 56, 117, 0.3);
+}
