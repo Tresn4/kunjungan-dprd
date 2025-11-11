@@ -106,6 +106,7 @@ const getAllKunjungan = async (req, res) => {
                 email,
                 file_pengantar, 
                 status,
+                rejection_reason,
                 created_at,
                 updated_at
             FROM kunjungan 
@@ -164,7 +165,7 @@ const updateStatusKunjungan = async (req, res) => {
         await client.query("BEGIN");
         
         const { id } = req.params;
-        const { status } = req.body;
+        const { status, rejection_reason } = req.body;
 
         // Validasi status
         const validStatus = ['pending', 'approved', 'rejected'];
@@ -172,6 +173,14 @@ const updateStatusKunjungan = async (req, res) => {
             return res.status(400).json({
                 success: false,
                 message: "Status tidak valid. Gunakan: pending, approved, atau rejected"
+            });
+        }
+
+        // Validasi rejection reason jika status rejected
+        if (status === 'rejected' && (!rejection_reason || rejection_reason.trim() === '')) {
+            return res.status(400).json({
+                success: false,
+                message: "Alasan penolakan harus diisi"
             });
         }
 
@@ -191,13 +200,15 @@ const updateStatusKunjungan = async (req, res) => {
         const visitData = visitResult.rows[0];
         const oldStatus = visitData.status;
 
-        // Update status
+        // Update status dan rejection_reason (jika ada)
         const result = await client.query(
             `UPDATE kunjungan 
-            SET status = $1, updated_at = CURRENT_TIMESTAMP 
-            WHERE id = $2 
+            SET status = $1, 
+                rejection_reason = $2, 
+                updated_at = CURRENT_TIMESTAMP 
+            WHERE id = $3 
             RETURNING *`,
-            [status, id]
+            [status, status === 'rejected' ? rejection_reason : null, id]
         );
 
         await client.query("COMMIT");
@@ -214,8 +225,12 @@ const updateStatusKunjungan = async (req, res) => {
                     })
                     .catch(err => console.error('Error sending approval email:', err));
             } else if (status === 'rejected') {
-                // Kirim email rejection
-                sendRejectionEmail(visitData)
+                // Kirim email rejection dengan alasan
+                const visitDataWithReason = {
+                    ...visitData,
+                    rejection_reason: rejection_reason
+                };
+                sendRejectionEmail(visitDataWithReason)
                     .then(result => {
                         if (result.success) {
                             console.log(`✅ Rejection email sent to ${visitData.email}`);
@@ -227,7 +242,7 @@ const updateStatusKunjungan = async (req, res) => {
 
         res.status(200).json({
             success: true,
-            message: "Status berhasil diupdate. Email notifikasi telah dikirim.",
+            message: `Status berhasil diupdate menjadi ${status === 'approved' ? 'Disetujui' : 'Ditolak'}. Email notifikasi telah dikirim.`,
             data: result.rows[0]
         });
     } catch (error) {

@@ -3,6 +3,7 @@ import HeaderAdmin from "../components/HeaderAdmin";
 import { getVisitData, updateVisitStatus, deleteVisit } from "../services/api";
 import Notification from "../components/Notification";
 import RekapModal from "../components/RekapModal";
+import RejectionModal from "../components/RejectionModal";
 import "../styles/admin.css";
 
 const AdminDashboard = () => {
@@ -13,7 +14,11 @@ const AdminDashboard = () => {
   const [notification, setNotification] = useState(null);
   const [isRekapModalOpen, setIsRekapModalOpen] = useState(false);
   
-  // Search & Filter states (HANYA SEKALI!)
+  // Rejection Modal States
+  const [isRejectionModalOpen, setIsRejectionModalOpen] = useState(false);
+  const [selectedVisitForRejection, setSelectedVisitForRejection] = useState(null);
+  
+  // Search & Filter states
   const [searchTerm, setSearchTerm] = useState("");
   const [filterStatus, setFilterStatus] = useState("all");
   const [sortBy, setSortBy] = useState("terbaru");
@@ -94,21 +99,57 @@ const AdminDashboard = () => {
   };
 
   const handleStatusChange = async (id, newStatus) => {
+    // Jika status adalah rejected, buka modal untuk input alasan
+    if (newStatus === 'rejected') {
+      const visit = visits.find(v => v.id === id);
+      setSelectedVisitForRejection(visit);
+      setIsRejectionModalOpen(true);
+      return;
+    }
+
+    // Untuk status approved, langsung proses
     try {
       const response = await updateVisitStatus(id, newStatus);
       
-      // Refresh data setelah update
       await fetchVisitData();
       
-      // Tampilkan notifikasi sukses dengan info email
       setNotification({
-        message: response.message || `Status berhasil diupdate menjadi ${newStatus === 'approved' ? 'Disetujui' : 'Ditolak'}. Email notifikasi telah dikirim.`,
+        message: response.message || 'Status berhasil diupdate menjadi Disetujui. Email notifikasi telah dikirim.',
         type: "success"
       });
     } catch (err) {
       console.error("Error updating status:", err);
       setNotification({
         message: err.message || "Gagal mengupdate status",
+        type: "error"
+      });
+    }
+  };
+
+  // Handle rejection dengan alasan
+  const handleRejectionSubmit = async (reason) => {
+    if (!selectedVisitForRejection) return;
+
+    try {
+      const response = await updateVisitStatus(
+        selectedVisitForRejection.id, 
+        'rejected',
+        reason
+      );
+      
+      await fetchVisitData();
+      
+      setNotification({
+        message: response.message || 'Pengajuan ditolak. Email notifikasi dengan alasan penolakan telah dikirim.',
+        type: "success"
+      });
+      
+      setIsRejectionModalOpen(false);
+      setSelectedVisitForRejection(null);
+    } catch (err) {
+      console.error("Error rejecting visit:", err);
+      setNotification({
+        message: err.message || "Gagal menolak pengajuan",
         type: "error"
       });
     }
@@ -209,6 +250,17 @@ const AdminDashboard = () => {
         onClose={() => setIsRekapModalOpen(false)} 
       />
 
+      {/* Rejection Modal */}
+      <RejectionModal 
+        isOpen={isRejectionModalOpen}
+        onClose={() => {
+          setIsRejectionModalOpen(false);
+          setSelectedVisitForRejection(null);
+        }}
+        onSubmit={handleRejectionSubmit}
+        institutionName={selectedVisitForRejection?.nama_institusi || ''}
+      />
+
       <div className="container mx-auto px-4 py-8">
         {/* Stats Card */}
         <div className="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
@@ -221,7 +273,6 @@ const AdminDashboard = () => {
                 {totalPages > 0 && ` | Halaman ${currentPage} dari ${totalPages}`}
               </p>
             </div>
-            {/* Button Cetak Rekap */}
             <button
               onClick={() => setIsRekapModalOpen(true)}
               className="bg-white text-blue-600 hover:bg-blue-50 px-4 py-2 rounded-md transition-colors flex items-center space-x-2 font-semibold"
@@ -236,7 +287,6 @@ const AdminDashboard = () => {
           {/* Search & Filter Section */}
           <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {/* Search Box */}
               <div className="col-span-1 md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Cari
@@ -250,7 +300,6 @@ const AdminDashboard = () => {
                 />
               </div>
 
-              {/* Status Filter */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Status
@@ -267,7 +316,6 @@ const AdminDashboard = () => {
                 </select>
               </div>
 
-              {/* Sort by */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">
                   Urutkan
@@ -283,7 +331,6 @@ const AdminDashboard = () => {
               </div>
             </div>
 
-            {/* Reset Button */}
             <div className="mt-4">
               <button
                 onClick={handleResetFilters}

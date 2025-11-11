@@ -22,7 +22,6 @@ export const submitVisitForm = async (formData) => {
   }
 };
 
-
 export const getVisitData = async () => {
   try {
     const response = await fetch('http://localhost:5000/api/kunjungan', {
@@ -46,8 +45,8 @@ export const getVisitData = async () => {
   }
 };
 
-// Update status kunjungan
-export const updateVisitStatus = async (id, status) => {
+// Update status kunjungan WITH REJECTION REASON
+export const updateVisitStatus = async (id, status, rejectionReason = null) => {
   try {
     const response = await fetch(`http://localhost:5000/api/kunjungan/${id}/status`, {
       method: 'PUT',
@@ -55,7 +54,10 @@ export const updateVisitStatus = async (id, status) => {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
       },
-      body: JSON.stringify({ status }),
+      body: JSON.stringify({ 
+        status,
+        rejection_reason: rejectionReason 
+      }),
     });
 
     if (!response.ok) {

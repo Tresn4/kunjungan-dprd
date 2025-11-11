@@ -1,3 +1,4 @@
+// be-aja/routes/authRoutes.js
 const express = require('express');
 const router = express.Router();
 const { loginAdmin, getProfile, logout } = require('../controllers/authController');

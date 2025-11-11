@@ -116,6 +116,9 @@ const getRejectedEmailTemplate = (visitData) => {
         .content { background: #ffffff; padding: 30px; border: 1px solid #e5e7eb; }
         .status-box { background: #fee2e2; border-left: 4px solid #dc2626; padding: 15px; margin: 20px 0; border-radius: 5px; }
         .status-box h3 { color: #dc2626; margin: 0 0 10px 0; }
+        .reason-box { background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 20px 0; border-radius: 5px; }
+        .reason-box h4 { color: #92400e; margin: 0 0 10px 0; font-size: 16px; }
+        .reason-box p { color: #78350f; margin: 0; line-height: 1.6; }
         .details { background: #f9fafb; padding: 20px; border-radius: 5px; margin: 20px 0; }
         .details-row { padding: 10px 0; border-bottom: 1px solid #e5e7eb; }
         .details-row:last-child { border-bottom: none; }
@@ -140,6 +143,13 @@ const getRejectedEmailTemplate = (visitData) => {
           <p>Kepada Yth. <strong>${visitData.nama_institusi}</strong>,</p>
           
           <p>Dengan hormat, kami informasikan bahwa pengajuan kunjungan Anda <strong>TIDAK DAPAT DIPROSES</strong> saat ini.</p>
+          
+          ${visitData.rejection_reason ? `
+          <div class="reason-box">
+            <h4>Alasan Penolakan:</h4>
+            <p>${visitData.rejection_reason}</p>
+          </div>
+          ` : ''}
           
           <div class="details">
             <h3 style="margin-top: 0; color: #1e3a8a;">Detail Pengajuan:</h3>
@@ -169,6 +179,7 @@ const getRejectedEmailTemplate = (visitData) => {
           <p>Untuk informasi lebih lanjut, silakan hubungi:</p>
           <p>
             <strong>Bagian Aspirasi, Humas, dan Protokol DPRD Provinsi Lampung</strong><br>
+            Jalan Wolter Monginsidi No. 69, Teluk Betung
           </p>
           
           <p>Terima kasih atas pengertiannya.</p>
